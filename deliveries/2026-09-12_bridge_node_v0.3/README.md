@@ -31,8 +31,9 @@ docs/
   review_code_bridge_node_*.md — review code trước khi giao (1 BLOCKER + 2 MAJOR đã fix)
   TEST-SCENARIO-real-robot-trial.md — KỊCH BẢN TEST CHO KỸ SƯ XƯỞNG — đọc trước khi chạy
 evidence/
-  rviz_screenshot.png         — ảnh chụp RViz đang chạy simulator (tay máy crx10ia)
-  rviz_recording.mp4          — video simulator đang hoạt động (xem ghi chú evidence trong file cùng tên .md nếu có)
+  EVIDENCE-NOTES.md            — ĐỌC FILE NÀY TRƯỚC — giải thích evidence chứng minh gì, kèm số liệu joint_states trước/sau
+  rviz_motion_proof.mp4        — video 12s tay máy DI CHUYỂN THẬT (đã verify bằng số liệu, không chỉ xem hình)
+  before_motion.png / after_motion.png — frame đầu/cuối, thấy rõ khớp tay đổi hướng
 ```
 
 ## Đọc theo thứ tự này
