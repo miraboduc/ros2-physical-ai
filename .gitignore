@@ -1,5 +1,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
+
+# Pretrained model weights (large, re-downloadable via ultralytics) — not source
+*.pt
 *.py[codz]
 *$py.class
 
