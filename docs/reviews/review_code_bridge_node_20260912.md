@@ -15,7 +15,7 @@ reviewer: Hoang Duc
 |---|---|---|
 | BLOCKER | 1 | ✅ |
 | MAJOR | 2 | ✅ |
-| MINOR | 5 | 2/5 (m3, m4, m5 chấp nhận rủi ro thấp, chưa fix) |
+| MINOR | 5 | 3/5 (m3 đóng 2026-09-12; m4, m5 chấp nhận rủi ro thấp, chưa fix) |
 | SUGGESTION | 4 | 2/4 (còn 2 chấp nhận nguyên trạng) |
 
 **Verdict ban đầu**: CHANGES REQUESTED. **Sau khi fix BLOCKER + 2 MAJOR + rebuild + test lại**: 18/18 unit test pass, coi như đạt để gửi đi (với các MINOR/SUGGESTION còn lại ghi rõ dưới đây, không chặn việc gửi).
@@ -45,7 +45,7 @@ reviewer: Hoang Duc
 
 ### 🟡 MINOR — còn lại, chấp nhận rủi ro thấp (chưa fix)
 
-- **m3**: `enable_on_start` override qua launch argument chưa có test end-to-end xác nhận string→bool coerce đúng qua `launch_ros`. Khuyến nghị: kỹ sư xưởng verify tay 1 lần (`ros2 launch bridge_node bridge_node.launch.py enable_on_start:=false`) trước khi tin tưởng.
+- ~~**m3**: `enable_on_start` override qua launch argument chưa có test end-to-end~~ — ✅ **Đóng 2026-09-12**: verify thật bằng `ros2 launch bridge_node bridge_node.launch.py enable_on_start:=false` + `ros2 param get /bridge_node enable_on_start` → trả về `Boolean value is: False` đúng, không bị lỗi coerce string→bool.
 - **m4**: `EnableGate.is_enabled()` check 1 lần ở đầu callback, không re-check ngay trước `send_goal()` — lý thuyết có thể lọt 1 goal thừa nếu disable đến đúng giữa khoảng đó. Xác suất/ảnh hưởng thấp (tối đa 1 goal thừa, không phải vô hạn), chấp nhận cho MVP.
 - **m5**: không check timestamp đồng bộ giữa `/yolo/detections` và `/yolo/detections_3d`. Rủi ro thấp vì tracking vật di động đã ngoài phạm vi (US-SY-001 AC3).
 
