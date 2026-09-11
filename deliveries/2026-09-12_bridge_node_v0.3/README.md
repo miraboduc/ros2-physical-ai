@@ -14,11 +14,16 @@ Package ROS2 (`bridge_node`) nối `yolo_ros` (nhận diện vật, YOLOv8) vớ
 
 **Trạng thái**: đã test kỹ trên **simulator** (Gazebo mock hardware, `fanuc_moveit_config`), **CHƯA từng chạy trên robot thật**. Đây là gói gửi để chạy thử lần đầu trên robot thật, theo đúng kịch bản test kèm theo — không phải bản production.
 
+## ⚠️ Lưu ý quan trọng — gói này KHÔNG tự chạy được ngay
+
+`bridge_node` chỉ là 1 trong 3 phần cần có (phần do Mirabo viết). **`yolo_ros`** (nhận diện) và **`fanuc_driver`** (điều khiển tay máy) là 2 source code khác, tải từ GitHub, PHẢI tự clone + build riêng — không có trong zip này (không đóng gói lại code của bên khác). Xem hướng dẫn đầy đủ ở `docs/SETUP-INSTALL-GUIDE.md` — làm theo đúng thứ tự đó trước khi chạy `bridge_node`.
+
 ## Nội dung gói
 
 ```
-bridge_node_source.zip      — toàn bộ source code (ROS2 Python package)
+bridge_node_source.zip      — source code CỦA MIRABO (ROS2 Python package) — chỉ 1/3 phần cần có
 docs/
+  SETUP-INSTALL-GUIDE.md      — BẮT BUỘC ĐỌC TRƯỚC — cài đủ cả 3 phần (yolo_ros, fanuc_driver, bridge_node)
   user-stories.md            — yêu cầu (6 user story, đã review)
   DDB-bridge-node.md          — thiết kế chi tiết (IEEE1016), 9 business rule, 7 Open Issue
   QA-testcases.csv            — 15 test case (song ngữ VI/JP), tất cả Pass
@@ -27,14 +32,15 @@ docs/
   TEST-SCENARIO-real-robot-trial.md — KỊCH BẢN TEST CHO KỸ SƯ XƯỞNG — đọc trước khi chạy
 evidence/
   rviz_screenshot.png         — ảnh chụp RViz đang chạy simulator (tay máy crx10ia)
-  rviz_recording.mp4          — video 15s simulator đang hoạt động
+  rviz_recording.mp4          — video simulator đang hoạt động (xem ghi chú evidence trong file cùng tên .md nếu có)
 ```
 
 ## Đọc theo thứ tự này
 
-1. **`docs/TEST-SCENARIO-real-robot-trial.md`** — bắt buộc đọc trước, có phần "Tổng quan" giải thích luồng hoạt động, cảnh báo an toàn, và quy trình test từng bước.
-2. **`docs/review_code_bridge_node_20260912.md`** — biết code đã được review gì, còn gì chưa hoàn hảo (mục MINOR còn lại) trước khi tin tưởng 100%.
-3. **`docs/DDB-bridge-node.md`** Mục 12 "Open Issues" — 3 giá trị vẫn là placeholder chưa đo thật (`workspace_bounds`, `table_height`, `grasp_orientation`) — **bắt buộc đo lại** trước khi chạy robot thật, xem kịch bản test Mục 2.1.
+1. **`docs/SETUP-INSTALL-GUIDE.md`** — cài đủ môi trường trước (yolo_ros + fanuc_driver + bridge_node), không chỉ giải nén zip này.
+2. **`docs/TEST-SCENARIO-real-robot-trial.md`** — bắt buộc đọc trước khi chạy, có phần "Tổng quan" giải thích luồng hoạt động, cảnh báo an toàn, và quy trình test từng bước.
+3. **`docs/review_code_bridge_node_20260912.md`** — biết code đã được review gì, còn gì chưa hoàn hảo (mục MINOR còn lại) trước khi tin tưởng 100%.
+4. **`docs/DDB-bridge-node.md`** Mục 12 "Open Issues" — 3 giá trị vẫn là placeholder chưa đo thật (`workspace_bounds`, `table_height`, `grasp_orientation`) — **bắt buộc đo lại** trước khi chạy robot thật, xem kịch bản test Mục 2.1.
 
 ## Tóm tắt trạng thái kỹ thuật
 

@@ -1,0 +1,9 @@
+[submodule "src/yolo_ros"]
+	path = src/yolo_ros
+	url = https://github.com/mgonzs13/yolo_ros.git
+[submodule "src/fanuc_description"]
+	path = src/fanuc_description
+	url = https://github.com/FANUC-CORPORATION/fanuc_description.git
+[submodule "src/fanuc_driver"]
+	path = src/fanuc_driver
+	url = https://github.com/FANUC-CORPORATION/fanuc_driver.git
