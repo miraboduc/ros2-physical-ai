@@ -197,10 +197,10 @@ status: draft
 ## Ma trận Dependencies (thứ tự triển khai)
 
 ```
-US-V-001 (Done) ──┐
-                   ├──► US-BR-001 ──► US-BR-002 ──► US-SY-001
-US-MO-001 (build) ─┘                     │
-                                          └──► US-BR-003 (enable/disable, có thể làm song song sau BR-002)
+US-V-001 (Done)    ---+
+                       +---> US-BR-001 ---> US-BR-002 ---> US-SY-001
+US-MO-001 (build)  ----+                         |
+                                                  +---> US-BR-003 (enable/disable, co the lam song song sau BR-002)
 ```
 
 **Đường găng (critical path) để có demo end-to-end trên Gazebo**: US-MO-001 (build fanuc_driver trên Gazebo) song song với US-BR-001 → US-BR-002 → US-SY-001. US-BR-003 không nằm trên đường găng, có thể làm sau hoặc song song.
