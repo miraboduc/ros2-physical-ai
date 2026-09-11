@@ -190,11 +190,15 @@ status: draft
 
 ## Ma trận Dependencies (thứ tự triển khai)
 
-```
-US-V-001 (Done)    ---+
-                       +---> US-BR-001 ---> US-BR-002 ---> US-SY-001
-US-MO-001 (build)  ----+                         |
-                                                  +---> US-BR-003 (enable/disable, co the lam song song sau BR-002)
+```mermaid
+flowchart LR
+    V001["US-V-001<br/>(Done)"] --> BR001["US-BR-001"]
+    MO001["US-MO-001<br/>(build)"] --> BR002["US-BR-002"]
+    BR001 --> BR002
+    BR001 --> SY001["US-SY-001"]
+    MO001 --> SY001
+    BR002 --> SY001
+    BR002 --> BR003["US-BR-003<br/>(enable/disable)"]
 ```
 
 **Đường găng (critical path) để có demo end-to-end trên Gazebo**: US-MO-001 (build fanuc_driver trên Gazebo) song song với US-BR-001 → US-BR-002 → US-SY-001. US-BR-003 không nằm trên đường găng, có thể làm sau hoặc song song.
@@ -206,3 +210,4 @@ US-MO-001 (build)  ----+                         |
 | Ngày | Phiên bản | Thay đổi | Người thực hiện |
 |---|---|---|---|
 | 2026-09-11 | 1.0 | Khởi tạo — 6 story (V-001, BR-001/002/003, MO-001, SY-001) | Hoang Duc |
+| 2026-09-12 | 1.1 | Đổi Ma trận Dependencies từ ASCII art sang biểu đồ Mermaid (render ảnh thật trong PDF, sửa lỗi ký tự vẽ khung bị vỡ font) | Hoang Duc |

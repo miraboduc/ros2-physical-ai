@@ -63,7 +63,7 @@ Toàn bộ luồng này **đã được test và xác nhận đúng trên máy g
 
 ---
 
-## 0. Đọc trước khi làm gì cả
+## 0. Lưu ý quan trọng trước khi bắt đầu
 
 **Chương trình này CHỈ mới được test trên simulator** (Gazebo/mock hardware trên PC, không có robot thật). Đây là **lần đầu tiên** chạy trên tay máy thật — làm theo đúng thứ tự từng bước dưới đây, **không nhảy cóc**, không tự ý bỏ bước "quan sát an toàn" dù có vẻ chương trình chạy ổn ở bước trước.
 
@@ -136,6 +136,7 @@ Model nhận diện hiện tại (YOLOv8 pretrained COCO) chỉ nhận diện đ
 
 **Xử lý khi không đạt:**
 
+<!-- portrait -->
 | Hiện tượng | Nguyên nhân thường gặp | Cách xử lý |
 |---|---|---|
 | Không có detection nào | Vật ngoài khung hình / quá xa / quá tối | Kiểm tra `/yolo/debug_image` xem có thấy vật không; tăng sáng; đưa vật gần lại |
@@ -173,6 +174,7 @@ Model nhận diện hiện tại (YOLOv8 pretrained COCO) chỉ nhận diện đ
 
 ## 4. Bảng ghi kết quả (điền lại khi test xong)
 
+<!-- portrait -->
 | Bước | Đạt/Không đạt | Quan sát thực tế | Người test | Ngày |
 |---|---|---|---|---|
 | 0 — Kết nối robot | | | | |
@@ -207,7 +209,9 @@ Toàn bộ luồng ở phần "Tổng quan" đã chạy và xác nhận đúng t
 
 ## Lịch sử thay đổi
 
+<!-- portrait -->
 | Ngày | Phiên bản | Thay đổi | Người thực hiện |
 |---|---|---|---|
 | 2026-09-11 | 1.0 | Khởi tạo — kịch bản test lần đầu trên robot thật, sau khi xưởng xác nhận robot đúng dòng CRX + có option phần mềm cần thiết | Hoang Duc |
 | 2026-09-12 | 1.1 | Thêm phần "Tổng quan — luồng hoạt động khi mọi thứ chạy đúng" lên đầu tài liệu; thêm Mục 6 tham chiếu kết quả test simulator trong gói giao | Hoang Duc |
+| 2026-09-12 | 1.2 | Đổi tên Mục 0 cho rõ nghĩa hơn ("Lưu ý quan trọng trước khi bắt đầu"); sửa lỗi PDF (bảng bị xoay ngang trang không cần thiết ở Mục 4/Xử lý khi không đạt/Lịch sử thay đổi — ép giữ portrait) | Hoang Duc |
