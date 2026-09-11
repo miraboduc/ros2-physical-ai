@@ -92,14 +92,23 @@ Nếu không đo lại `workspace_bounds` cho hẹp/an toàn thật trước khi
 ### 2.1 Phần cứng / kết nối
 - [ ] Robot Fanuc CRX đã xác nhận đúng dòng hỗ trợ, controller có option Stream Motion (J519) + Remote Motion (R912) / S636 External Control Package đã kích hoạt (theo ROADMAP.md Phase 5 — đã xác nhận với xưởng).
 - [ ] Kết nối network giữa PC/Jetson chạy ROS2 và Fanuc controller đã thiết lập theo [FANUC ROS 2 Driver Documentation](https://fanuc-corporation.github.io/fanuc_driver_doc/) (IP, port, cấu hình phía controller).
-- [ ] Camera đã lắp cố định, **đo và ghi lại** vị trí/góc thật so với gốc robot (`base_link`) — không dùng giá trị tf giả định của bản test simulator.
+- [ ] Camera đã lắp **cố định chắc chắn** (bắt vít/kẹp chặt, không phải để tạm) và **đo và ghi lại** vị trí/góc thật so với gốc robot (`base_link`) — không dùng giá trị tf giả định của bản test simulator. **Lưu ý quan trọng**: toàn bộ hệ thống giả định camera đứng yên tuyệt đối so với robot sau khi đo — nếu camera bị xê dịch (va chạm, rung, tháo lắp lại) sau khi đã đo/cấu hình, mọi tính toán vị trí vật sẽ sai mà **hệ thống không tự phát hiện được** (không có cơ chế tự kiểm tra camera có bị lệch hay không). Nếu nghi ngờ camera bị xê dịch, phải đo lại từ đầu trước khi tin tưởng kết quả.
 - [ ] Đo chiều cao mặt phẳng nơi vật sẽ được đặt (bàn/băng chuyền) so với `base_link` → cập nhật `table_height`.
 - [ ] Đo/ước lượng vùng không gian **an toàn và chắc chắn robot với tới được** → cập nhật `workspace_bounds` **hẹp hơn** tầm với thật (có biên độ dự phòng), không dùng nguyên hộp mặc định.
 
 ### 2.2 Vật mẫu để test
-- Model nhận diện hiện tại (YOLOv8 pretrained COCO) chỉ nhận diện được **80 loại vật đã được train sẵn** (người, chai, cốc, ghế, ba lô, laptop... — xem đầy đủ danh sách [tại đây](https://docs.ultralytics.com/datasets/detect/coco/#dataset-yaml)).
-- [ ] Chuẩn bị 2-3 vật mẫu thuộc danh sách này (ví dụ: chai nước, cốc, ba lô) để test — **KHÔNG dùng vật đặc thù của xưởng** ở lần test này (model chưa được train cho vật đó, sẽ không nhận diện được hoặc nhận diện sai).
-- Nếu mục tiêu cuối là nhận diện vật đặc thù của xưởng: đây là công việc **riêng, làm sau** (fine-tune model hoặc dùng YOLO-World) — không nằm trong phạm vi kịch bản test này.
+
+Model nhận diện hiện tại (YOLOv8 pretrained COCO) chỉ nhận diện được **80 loại vật đã được train sẵn** — [danh sách đầy đủ](https://docs.ultralytics.com/datasets/detect/coco/#dataset-yaml). Không phải class nào cũng dễ nhận diện như nhau.
+
+- [ ] **Chọn vật cụ thể, dễ nhận diện** — ưu tiên vật hay gặp, hình dạng rõ ràng, không trong suốt/phản chiếu mạnh: `bottle` (chai nước), `cup` (cốc), `cell phone`, `book`, `keyboard`, `mouse`, `scissors`. Tránh vật nhỏ/mảnh (ví dụ `fork`, `spoon`) hoặc vật dễ lẫn với nền ở lần test đầu.
+- [ ] Chuẩn bị **2-3 vật khác class nhau** (ví dụ: 1 chai nước + 1 cuốn sách + 1 cái cốc) — **không đặt 2 vật cùng class cùng lúc trong khung hình** (ví dụ 2 chai nước) ở các Bước 3-6: hệ thống hiện tại không phân biệt được 2 vật cùng loại đứng cạnh nhau (xem `DDB-bridge-node.md` Open Issue #7), sẽ gây nhầm lẫn vị trí, không phải lỗi nhưng chưa xử lý được tình huống này.
+- [ ] **KHÔNG dùng vật đặc thù của xưởng** ở lần test này — model chưa được train cho vật đó, sẽ không nhận diện được hoặc nhận diện nhầm sang class gần giống. Việc train riêng cho vật của xưởng (fine-tune hoặc YOLO-World) là công việc khác, làm sau khi pipeline cơ bản đã chạy ổn.
+
+**Vị trí đặt vật (quan trọng, ảnh hưởng trực tiếp tới việc nhận diện có ra kết quả đúng không):**
+- [ ] Đặt vật **trong khung hình camera nhìn thấy rõ** (không bị che, không ở rìa khung hình) — kiểm tra bằng cách xem ảnh trực tiếp (xem Bước 1).
+- [ ] Khoảng cách vừa phải: **không quá gần** (vật chiếm gần hết khung hình / bị cắt mép — bbox sai) và **không quá xa** (vật quá nhỏ trong khung hình — model dễ bỏ sót hoặc score thấp). Bắt đầu ở khoảng cách mà vật chiếm khoảng 1/6 – 1/3 chiều rộng khung hình.
+- [ ] Nền phía sau vật **không quá lộn xộn**, đủ ánh sáng đều (tránh ngược sáng — vật tối om trước cửa sổ/đèn sáng phía sau), tránh bóng đổ mạnh che vật.
+- [ ] Vật nằm trong vùng mà sau khi tính tọa độ 3D sẽ rơi vào `workspace_bounds` đã cấu hình (Mục 2.1) — nếu không chắc, cứ test trước, xem log cảnh báo BR004 để biết pose tính ra là bao nhiêu, rồi điều chỉnh vị trí vật hoặc `workspace_bounds`.
 
 ### 2.3 Phần mềm
 - [ ] `fanuc_driver` build cho robot thật, launch **KHÔNG dùng** `use_mock:=true` (cờ đó chỉ dùng cho giả lập trên PC).
@@ -116,10 +125,22 @@ Nếu không đo lại `workspace_bounds` cho hẹp/an toàn thật trước khi
 3. **Đạt**: robot di chuyển đúng lệnh, dừng đúng lúc. **Không đạt**: dừng lại, không qua bước 1, báo lại vấn đề kết nối/driver.
 
 ### Bước 1 — Test riêng phần nhận diện (camera + yolo_ros), CHƯA launch bridge_node
+
 1. Launch camera driver thật + `yolo_bringup yolov8.launch.py`.
-2. Đặt 1 vật mẫu (Mục 2.2) trước camera.
-3. Xem topic `/yolo/detections` — xác nhận có phát hiện đúng vật, đúng tên class, score hợp lý (>0.5).
-4. **Đạt**: detect đúng vật, ổn định qua vài giây. **Không đạt**: dừng lại, kiểm tra ánh sáng/góc camera/khoảng cách trước khi tiếp tục.
+2. **Xem ảnh trực tiếp có vẽ khung nhận diện** (không chỉ xem số liệu) — dùng `rqt_image_view`, chọn topic `/yolo/debug_image`. Đây là cách nhanh nhất để biết camera có thấy đúng vật, khung hình có che/lệch không, trước khi quan tâm tới tọa độ 3D.
+3. Đặt 1 vật mẫu (theo Mục 2.2) trước camera, theo đúng khoảng cách/vị trí đã hướng dẫn.
+4. Xem topic `/yolo/detections` (hoặc nhìn khung hình trong `/yolo/debug_image`) — xác nhận có phát hiện đúng vật, đúng tên class, score hợp lý (>0.5), khung bao (bbox) ôm sát vật chứ không lệch sang vật khác.
+5. Thử di chuyển vật qua 2-3 vị trí khác nhau trong vùng dự kiến sẽ test — xác nhận detect ổn định ở mọi vị trí, không chỉ 1 chỗ may mắn.
+6. **Đạt**: detect đúng vật, đúng khung, ổn định qua vài giây, ở nhiều vị trí thử. **Không đạt**: dừng lại, xử lý theo bảng dưới trước khi qua Bước 2.
+
+**Xử lý khi không đạt:**
+
+| Hiện tượng | Nguyên nhân thường gặp | Cách xử lý |
+|---|---|---|
+| Không có detection nào | Vật ngoài khung hình / quá xa / quá tối | Kiểm tra `/yolo/debug_image` xem có thấy vật không; tăng sáng; đưa vật gần lại |
+| Score thấp (< 0.5) liên tục | Vật quá nhỏ trong khung hình, góc chụp lạ, ảnh mờ/rung | Đưa vật lại gần hơn; giữ camera/vật ổn định; lau ống kính |
+| Detect sai class (ví dụ nhận nhầm chai thành cốc) | Vật che khuất 1 phần, góc chụp không điển hình, ánh sáng làm biến dạng hình | Đổi góc đặt vật; thử vật khác trong danh sách Mục 2.2 |
+| Detect nhảy liên tục giữa "có" và "không" | Ở ranh giới threshold, ánh sáng không ổn định (đèn nhấp nháy, ánh sáng tự nhiên thay đổi) | Cải thiện ánh sáng ổn định hơn; có thể cần chỉnh `score_threshold` (báo lại người viết chương trình trước khi tự đổi) |
 
 ### Bước 2 — Launch bridge_node, pipeline TẮT (enable=false)
 1. Launch `bridge_node` với params đã cập nhật số đo thật (Mục 2.1, 2.3).
