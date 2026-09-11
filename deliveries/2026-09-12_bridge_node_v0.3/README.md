@@ -25,7 +25,7 @@ bridge_node_source.zip      — source code CỦA MIRABO (ROS2 Python package) �
 docs/
   SETUP-INSTALL-GUIDE.md      — BẮT BUỘC ĐỌC TRƯỚC — cài đủ cả 3 phần (yolo_ros, fanuc_driver, bridge_node)
   TEST-SCENARIO-real-robot-trial.pdf / .md — KỊCH BẢN TEST CHO KỸ SƯ XƯỞNG — đọc trước khi chạy (bản PDF dễ đọc hơn nếu không quen markdown)
-  user-stories.pdf / .md    — yêu cầu (6 user story, đã review) — có bản PDF
+  user-stories.pdf / .md    — yêu cầu (6 user story, đã review) — có bản PDF. **Đã bỏ trường "Estimation"** (story points nội bộ, không rõ ràng để chia sẻ ra ngoài) — bản đầy đủ có Estimation lưu ở `docs/requirements/user-stories.md` trong repo, không nằm trong gói giao này
   DDB-bridge-node.md          — thiết kế chi tiết (IEEE1016), 9 business rule, 7 Open Issue
   QA-testcases.csv            — 17 test case (song ngữ VI/JP), tất cả Pass
   QA-questions-factory-confirmation.csv — 9 CÂU HỎI CẦN XƯỞNG XÁC NHẬN TRƯỚC (song ngữ VI/JP) — gửi trước khi hẹn lịch chạy thử

@@ -51,7 +51,6 @@ status: draft
 **Related**: US-BR-001
 **Blocks**: US-BR-001
 **Platform**: Both (code không đổi giữa Simulation/Real Robot, chỉ đổi `input_image_topic`)
-**Estimation**: 0 SP mới — **Done** (reuse [mgonzs13/yolo_ros](https://github.com/mgonzs13/yolo_ros), không viết code)
 **Nguồn**: ROADMAP.md Phase 3
 
 **Status**: ✓ Done — verified 2026-09-11 (demo end-to-end với ảnh test, phát hiện đúng "bus" 94.6%, "person" 90.3%, chạy trên RTX 3070 qua CUDA, 420MB VRAM)
@@ -78,7 +77,6 @@ status: draft
 **Related**: US-BR-002
 **Blocks**: US-BR-002, US-SY-001
 **Platform**: Both (logic giống nhau; khác camera intrinsics/tf tree thật giữa Gazebo và Fanuc thật)
-**Estimation**: 5 SP (camera calibration + tf2 handling + xử lý depth-vs-2D)
 **Nguồn**: ROADMAP.md Phase 3-4
 
 **Status**: ✓ Done — implemented (`bridge_node` package, `PoseConverter`), 5 unit test pass + verified qua integration test end-to-end (TC-002/003/004/013). Open Issue #5/#6 (table_height, grasp_orientation — xem DDB-bridge-node.md) là giá trị placeholder chưa đo thật, không chặn việc coi AC đã pass.
@@ -105,7 +103,6 @@ status: draft
 **Related**: US-BR-001
 **Blocks**: US-SY-001
 **Platform**: Both (đổi action server name/namespace khi chuyển Gazebo ↔ Fanuc thật, logic gọi action giống nhau)
-**Estimation**: 5 SP
 **Nguồn**: ROADMAP.md Phase 4 (bước 1-3: pipeline/lookahead, shared latest-detection state)
 
 **Status**: ✓ Done — implemented (`MotionGoalSender`, dùng `MoveGroup` action thay `FollowJointTrajectory` trực tiếp — xem DDB-bridge-node.md §10), 4 unit test pass + verified integration test thật trên `fanuc_moveit_config` mock hardware (TC-005 happy path SUCCESS, TC-006 reject ngoài workspace, TC-007 ABORTED/PLANNING_FAILED không retry). Phát hiện + fix 1 bug thật (BR007 — action server chết làm node hang vô hạn, TC-008).
@@ -132,7 +129,6 @@ status: draft
 **Related**: US-V-001 (yolo_ros đã có `/yolo/enable` cùng pattern)
 **Blocks**: None
 **Platform**: Both
-**Estimation**: 3 SP (tăng từ 2 SP sau review — thêm xử lý an toàn khi disable giữa lúc đang di chuyển)
 **Nguồn**: ROADMAP.md — nguyên tắc an toàn vận hành (không có Phase cụ thể, suy ra từ thực hành chuẩn robotics)
 
 **Status**: ✓ Done — implemented (`EnableGate`), 4 unit test pass + verified integration test thật (TC-009 disable chặn goal mới, TC-010 enable lại resume, TC-011 disable giữa lúc EXECUTING không cắt trajectory hiện tại — đúng BR006).
@@ -158,7 +154,6 @@ status: draft
 **Related**: US-BR-002
 **Blocks**: US-BR-002 (bridge cần action server này tồn tại và chạy để gửi goal)
 **Platform**: Simulation (qua `ros2_control` hardware_interface mô phỏng trên Gazebo Harmonic) & Real Robot (qua `fanuc_driver` streaming driver thật — cần xác nhận model CRX + software option theo ROADMAP Phase 5, chưa chốt)
-**Estimation**: 0 SP code mới (100% reuse `fanuc_driver`) — nhưng cần 2 SP công việc tích hợp/verify (build + test trên Gazebo) trước khi coi là xong; cấu hình URDF/controller cho robot cụ thể thật (Phase 5) chưa ước lượng ở đây
 **Nguồn**: ROADMAP.md Phase 2 (ros2_control abstraction), Phase 5 (Fanuc thật — điều kiện CRX + S636 option chưa xác nhận)
 
 **Status**: ✓ Done — build thành công, `joint_trajectory_controller` + `move_group` activate và chạy được, `/joint_states` publish đúng (J1-J6, `base_link`). AC1 verify thật qua Bridge Node integration test (goal SUCCESS, robot thực sự di chuyển qua mock hardware). AC2 verify qua TC-007 (pose ngoài tầm với → PLANNING_FAILED, không di chuyển nguy hiểm). AC3 (`/joint_states` liên tục) verify qua `ros2 topic echo`.
@@ -184,7 +179,6 @@ status: draft
 **Related**: US-BR-003
 **Blocks**: None
 **Platform**: Simulation (Gazebo) trước — Real Robot sau khi Phase 5 xác nhận model/option
-**Estimation**: — (story tích hợp/xác nhận, không cộng SP riêng ngoài US-BR-001 + US-BR-002 + US-MO-001)
 **Nguồn**: ROADMAP.md Phase 4 (mục tiêu cuối), Phần "Cách làm việc cùng nhau" (không chuyển phase nếu chưa đo thật)
 
 **Status**: ✓ Done — verify thật 2026-09-11 với `yolo_ros` + camera stream (3Hz, ảnh test) chạy **song song thật** với `bridge_node` + `fanuc_moveit_config` mock hardware. Xác nhận: object trong tầm nhìn → tay máy di chuyển; vision không hề bị chặn/gián đoạn trong lúc tay máy di chuyển (giữ nguyên 3Hz suốt); không có goal chồng lấp (fix BR008, phát hiện đúng lúc chuẩn bị test này). Còn lại: `table_height`/`grasp_orientation` (Open Issue #5/#6) là placeholder nên pose tính ra không phải lúc nào cũng physically hợp lệ — không phải bug, cần đo thật trước khi có ý nghĩa với vật thể/robot thật.
