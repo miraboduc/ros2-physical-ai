@@ -24,10 +24,10 @@ Package ROS2 (`bridge_node`) nối `yolo_ros` (nhận diện vật, YOLOv8) vớ
 bridge_node_source.zip      — source code CỦA MIRABO (ROS2 Python package) — chỉ 1/3 phần cần có
 docs/
   SETUP-INSTALL-GUIDE.md      — BẮT BUỘC ĐỌC TRƯỚC — cài đủ cả 3 phần (yolo_ros, fanuc_driver, bridge_node)
-  user-stories.md            — yêu cầu (6 user story, đã review)
+  TEST-SCENARIO-real-robot-trial.pdf / .md — KỊCH BẢN TEST CHO KỸ SƯ XƯỞNG — đọc trước khi chạy (bản PDF dễ đọc hơn nếu không quen markdown)
+  user-stories.pdf / .md    — yêu cầu (6 user story, đã review) — có bản PDF
   DDB-bridge-node.md          — thiết kế chi tiết (IEEE1016), 9 business rule, 7 Open Issue
   QA-testcases.csv            — 17 test case (song ngữ VI/JP), tất cả Pass
-  TEST-SCENARIO-real-robot-trial.md — KỊCH BẢN TEST CHO KỸ SƯ XƯỞNG — đọc trước khi chạy
   QA-questions-factory-confirmation.csv — 9 CÂU HỎI CẦN XƯỞNG XÁC NHẬN TRƯỚC (song ngữ VI/JP) — gửi trước khi hẹn lịch chạy thử
 evidence/
   EVIDENCE-NOTES.md            — ĐỌC FILE NÀY TRƯỚC — giải thích evidence chứng minh gì, kèm số liệu joint_states trước/sau

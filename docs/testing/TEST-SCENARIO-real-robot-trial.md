@@ -52,6 +52,7 @@ Tay máy tới đích → dừng lại → sẵn sàng nhận vật thể tiếp
 ```
 
 **Những gì người vận hành sẽ *thấy* trong một buổi chạy đúng:**
+
 - Không có vật nào trước camera → tay máy đứng yên ở vị trí home, không tự di chuyển.
 - Đặt 1 vật (chai nước, cốc...) vào trong vùng camera thấy được và trong vùng an toàn đã cấu hình → sau khoảng 1-2 giây, tay máy tự di chuyển mượt tới gần vật đó rồi dừng lại.
 - Nhấc vật ra, đặt vật khác vào chỗ khác (vẫn trong vùng an toàn) → tay máy di chuyển tới vị trí mới.
@@ -67,11 +68,10 @@ Toàn bộ luồng này **đã được test và xác nhận đúng trên máy g
 **Chương trình này CHỈ mới được test trên simulator** (Gazebo/mock hardware trên PC, không có robot thật). Đây là **lần đầu tiên** chạy trên tay máy thật — làm theo đúng thứ tự từng bước dưới đây, **không nhảy cóc**, không tự ý bỏ bước "quan sát an toàn" dù có vẻ chương trình chạy ổn ở bước trước.
 
 **3 giá trị sau đang là số đo tạm/giả định lấy từ lúc test trên simulator, CHƯA đo trên robot/camera thật:**
-| Tham số | Ý nghĩa | Giá trị hiện tại (giả định) |
-|---|---|---|
-| `workspace_bounds` | Vùng không gian tay máy được phép di chuyển tới | Hộp `[-1,1]×[-1,1]×[0,1.5]` m — **PHẢI đo lại và thu hẹp** theo tầm với an toàn thật của robot xưởng trước khi chạy Bước 3 |
-| `table_height` | Giả định vật nằm trên 1 mặt phẳng ngang cố định | `0.0` m — sai với thực tế xưởng gần như chắc chắn, cần đo chiều cao mặt bàn/băng chuyền thật |
-| `grasp_orientation_rpy` | Hướng tiếp cận (robot chưa có gripper, chỉ ảnh hưởng orientation khi lập kế hoạch) | `[0,0,0]` — chưa verify với hướng thật của link `flange` |
+
+- **`workspace_bounds`** (vùng không gian tay máy được phép di chuyển tới) — đang là hộp `[-1,1]×[-1,1]×[0,1.5]` m. **PHẢI đo lại và thu hẹp** theo tầm với an toàn thật của robot xưởng trước khi chạy Bước 3.
+- **`table_height`** (giả định vật nằm trên 1 mặt phẳng ngang cố định) — đang là `0.0` m. Sai với thực tế xưởng gần như chắc chắn, cần đo chiều cao mặt bàn/băng chuyền thật.
+- **`grasp_orientation_rpy`** (hướng tiếp cận — robot chưa có gripper, chỉ ảnh hưởng orientation khi lập kế hoạch) — đang là `[0,0,0]`. Chưa verify với hướng thật của link `flange`.
 
 Nếu không đo lại `workspace_bounds` cho hẹp/an toàn thật trước khi chạy, robot có thể tính ra và cố di chuyển tới 1 điểm không như mong đợi.
 
@@ -105,6 +105,7 @@ Model nhận diện hiện tại (YOLOv8 pretrained COCO) chỉ nhận diện đ
 - [ ] **KHÔNG dùng vật đặc thù của xưởng** ở lần test này — model chưa được train cho vật đó, sẽ không nhận diện được hoặc nhận diện nhầm sang class gần giống. Việc train riêng cho vật của xưởng (fine-tune hoặc YOLO-World) là công việc khác, làm sau khi pipeline cơ bản đã chạy ổn.
 
 **Vị trí đặt vật (quan trọng, ảnh hưởng trực tiếp tới việc nhận diện có ra kết quả đúng không):**
+
 - [ ] Đặt vật **trong khung hình camera nhìn thấy rõ** (không bị che, không ở rìa khung hình) — kiểm tra bằng cách xem ảnh trực tiếp (xem Bước 1).
 - [ ] Khoảng cách vừa phải: **không quá gần** (vật chiếm gần hết khung hình / bị cắt mép — bbox sai) và **không quá xa** (vật quá nhỏ trong khung hình — model dễ bỏ sót hoặc score thấp). Bắt đầu ở khoảng cách mà vật chiếm khoảng 1/6 – 1/3 chiều rộng khung hình.
 - [ ] Nền phía sau vật **không quá lộn xộn**, đủ ánh sáng đều (tránh ngược sáng — vật tối om trước cửa sổ/đèn sáng phía sau), tránh bóng đổ mạnh che vật.
@@ -195,6 +196,7 @@ Model nhận diện hiện tại (YOLOv8 pretrained COCO) chỉ nhận diện đ
 ## 6. Kết quả test trên simulator (tham khảo trước khi test thật)
 
 Toàn bộ luồng ở phần "Tổng quan" đã chạy và xác nhận đúng trên simulator (Gazebo mock hardware, không phải robot thật) trước khi gửi kịch bản này. Xem kèm trong gói giao (`deliveries/`):
+
 - `QA-testcases.csv` — 21 test case, tất cả Pass (đơn vị + tích hợp trên simulator)
 - Ảnh chụp/video màn hình simulator lúc chạy thật (RViz + log)
 - `docs/design/DDB-bridge-node.md` — thiết kế chi tiết, bao gồm 2 lỗi thật đã phát hiện và fix trong lúc test (BR007: action server chết làm treo vô hạn; BR008: gửi lệnh chồng khi tay máy đang di chuyển)
