@@ -26,11 +26,9 @@ docs/
   SETUP-INSTALL-GUIDE.md      — BẮT BUỘC ĐỌC TRƯỚC — cài đủ cả 3 phần (yolo_ros, fanuc_driver, bridge_node)
   user-stories.md            — yêu cầu (6 user story, đã review)
   DDB-bridge-node.md          — thiết kế chi tiết (IEEE1016), 9 business rule, 7 Open Issue
-  QA-testcases.csv            — 15 test case (song ngữ VI/JP), tất cả Pass
-  review_story_*.md           — review chất lượng user story
-  review_code_bridge_node_*.md — review code trước khi giao (1 BLOCKER + 2 MAJOR đã fix)
+  QA-testcases.csv            — 17 test case (song ngữ VI/JP), tất cả Pass
   TEST-SCENARIO-real-robot-trial.md — KỊCH BẢN TEST CHO KỸ SƯ XƯỞNG — đọc trước khi chạy
-  QA-questions-factory-confirmation.csv — 7 CÂU HỎI CẦN XƯỞNG XÁC NHẬN TRƯỚC (song ngữ VI/JP) — gửi trước khi hẹn lịch chạy thử
+  QA-questions-factory-confirmation.csv — 9 CÂU HỎI CẦN XƯỞNG XÁC NHẬN TRƯỚC (song ngữ VI/JP) — gửi trước khi hẹn lịch chạy thử
 evidence/
   EVIDENCE-NOTES.md            — ĐỌC FILE NÀY TRƯỚC — giải thích evidence chứng minh gì, kèm số liệu joint_states trước/sau
   rviz_motion_proof.mp4        — video 12s tay máy DI CHUYỂN THẬT (đã verify bằng số liệu, không chỉ xem hình)
@@ -39,11 +37,10 @@ evidence/
 
 ## Đọc theo thứ tự này
 
-0. **`docs/QA-questions-factory-confirmation.csv`** — gửi/xác nhận với xưởng TRƯỚC KHI hẹn lịch chạy thử (JetPack version, model Jetson/CRX, vật mẫu test, ai đo số liệu an toàn...).
+0. **`docs/QA-questions-factory-confirmation.csv`** — gửi/xác nhận với xưởng TRƯỚC KHI hẹn lịch chạy thử (JetPack version, model Jetson/CRX, vật mẫu test, và 3 số đo vật lý bắt buộc: vùng an toàn, chiều cao mặt đặt vật, vị trí camera).
 1. **`docs/SETUP-INSTALL-GUIDE.md`** — cài đủ môi trường trước (yolo_ros + fanuc_driver + bridge_node), không chỉ giải nén zip này.
 2. **`docs/TEST-SCENARIO-real-robot-trial.md`** — bắt buộc đọc trước khi chạy, có phần "Tổng quan" giải thích luồng hoạt động, cảnh báo an toàn, và quy trình test từng bước.
-3. **`docs/review_code_bridge_node_20260912.md`** — biết code đã được review gì, còn gì chưa hoàn hảo (mục MINOR còn lại) trước khi tin tưởng 100%.
-4. **`docs/DDB-bridge-node.md`** Mục 12 "Open Issues" — 3 giá trị vẫn là placeholder chưa đo thật (`workspace_bounds`, `table_height`, `grasp_orientation`) — **bắt buộc đo lại** trước khi chạy robot thật, xem kịch bản test Mục 2.1.
+3. **`docs/DDB-bridge-node.md`** Mục 12 "Open Issues" — các giá trị vẫn là placeholder chưa đo thật (`workspace_bounds`, `table_height`, `grasp_orientation`, camera pose) — **bắt buộc đo lại** trước khi chạy robot thật, xem kịch bản test Mục 2.1 và trả lời Q-006/007/008 trong file Q&A.
 
 ## Tóm tắt trạng thái kỹ thuật
 
